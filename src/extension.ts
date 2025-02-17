@@ -1,6 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { Ollama } from 'ollama';
+import ollama from 'ollama';
 import { Stream } from 'stream';
 import * as vscode from 'vscode';
 
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
             'DeepSeek Chat', 
             vscode.ViewColumn.One, 
             {enableScripts: true}
-        )
+        );
 
         panel.webview.html = getWebViewContent();
         panel.webview.onDidReceiveMessage(async (message: any) => {
@@ -36,10 +36,10 @@ export function activate(context: vscode.ExtensionContext) {
                         model: 'deepseek-r1:latest',
                         messages: [{role: 'user', content: userPrompt }],
                         stream: true 
-                    })
+                    });
 
                     for await (const part of streamResponse) {
-                        responseText += part.message.content
+                        responseText += part.message.content;
                         panel.webview.postMessage({ command: 'chatResponse', text: responseText});
                     }
                 }
@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
         });
 
-        vscode.window.showInformationMessage('Hello World from LocalDeepSeek and RF_Faisal! !');
+        vscode.window.showInformationMessage('Hello World from LocalDeepSeek and RF_Faisal!!');
 	});
 
 	context.subscriptions.push(disposable);
@@ -69,28 +69,28 @@ function getWebViewContent(): string{
     </head>
     <body>
         <h2> DeepSeek VSCode Extension</h2>
-        <textarea id="prompt" rows=3 placeholder="Ask something to get started..."></textarea><br>
+        <textarea id="prompt" rows="3" placeholder="Ask something to get started..."></textarea>br
         <button id="askbtn"> Ask </button>
         <div id="response"> </div>
 
         <script>
-            const vscode = acquireVscodeApi();
+            const vscode = acquireVsCodeApi();
 
             document.getElementById('askbtn').addEventListener('click', () => {
                 const text = document.getElementById('prompt').value;
                 vscode.postMessage({command: 'chat', text});
             });
 
-            window.addEventListener('message', event=> ){
-                const {command, text } = event .data;
+            window.addEventListener('message', event=> {
+                const {command, text } = event.data;
                 if(command === 'charResponse') {
                     document.getElementById('response').innerText = text;
                 }
-            }
+            });
         </script>
     </body>
     </html>
-    `
+    `;
 }
 // This method is called when your extension is deactivated
 export function deactivate() {}
