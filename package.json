@@ -9,7 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:localdeepseek.LocalDeepseekStart"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
